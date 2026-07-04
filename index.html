@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tajdeed (تجديد) — UAE Renewal Tracker</title>
+  <meta name="description" content="Never pay a UAE late fine again. Track visa, Emirates ID, passport and vehicle renewals for the whole family — private, offline, no sign-up." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #10201B; --sub: #5F6E68; --canvas: #F5F7F5; --card: #FFFFFF; --line: #E9EEEA;
+      --green: #0E7C5B; --green-bg: #E7F3EE; --amber: #96590A; --amber-bg: #FCF0DC;
+      --red: #B3261E; --red-bg: #FBEAE8; --gold: #C9A227;
+      --hero-top: #123B2F; --hero-bottom: #0C231C; --hero-sub: #9FC3B4;
+      --radius-card: 24px; --radius-ctl: 16px;
+      --shadow: 0 8px 24px rgba(16, 32, 27, 0.06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #ECF2EF; --sub: #93A69D; --canvas: #0B1512; --card: #132019; --line: #22322A;
+        --green: #5BC79C; --green-bg: #14352A; --amber: #E8A94F; --amber-bg: #3A2B10;
+        --red: #EF8B82; --red-bg: #3D1713;
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--canvas); color: var(--ink); line-height: 1.6;
+    }
+    .display { font-family: "Tajawal", sans-serif; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* Eyebrow — bilingual signage */
+    .eyebrow { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+    .eyebrow .en { font-size: 12px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; color: var(--sub); }
+    .eyebrow .ar { font-family: "Tajawal", sans-serif; font-size: 14px; color: var(--sub); direction: rtl; }
+
+    /* Nav */
+    nav { padding: 22px 0; }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+    .wordmark { display: inline-block; }
+    .wordmark .row { display: flex; gap: 10px; align-items: baseline; }
+    .wordmark .name { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.5px; }
+    .wordmark .ar { font-family: "Tajawal", sans-serif; font-size: 15px; color: var(--sub); }
+    .wordmark .hairline { width: 44px; height: 2px; background: var(--gold); border-radius: 1px; margin-top: 2px; }
+    nav a.support { color: var(--sub); text-decoration: none; font-size: 14px; }
+    nav a.support:hover { color: var(--ink); }
+
+    /* Hero */
+    .hero {
+      position: relative; overflow: hidden; border-radius: var(--radius-card);
+      background: linear-gradient(160deg, var(--hero-top), var(--hero-bottom));
+      color: #fff; padding: 64px 28px; margin: 12px 0 56px; box-shadow: var(--shadow);
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; text-align: center; }
+    .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--hero-sub); text-transform: uppercase; }
+    .hero h1 { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: clamp(34px, 6vw, 52px); line-height: 1.15; margin: 14px 0 6px; }
+    .hero .ar-line { font-family: "Tajawal", sans-serif; font-size: 20px; color: var(--hero-sub); direction: rtl; margin-bottom: 18px; }
+    .hero p.sub { color: var(--hero-sub); font-size: 17px; max-width: 480px; margin: 0 auto 28px; }
+    .badge-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; align-items: center; }
+    .store-badge {
+      display: inline-flex; align-items: center; gap: 10px; background: #fff; color: #10201B;
+      border-radius: var(--radius-ctl); padding: 12px 22px; text-decoration: none; font-weight: 600; font-size: 15px;
+    }
+    .store-badge .apple { font-size: 22px; line-height: 1; }
+    .store-badge small { display: block; font-size: 11px; font-weight: 500; color: #5F6E68; line-height: 1.2; }
+    .fines-pill {
+      display: inline-block; border: 1px solid var(--gold); color: var(--gold);
+      border-radius: 999px; padding: 8px 16px; font-family: "Tajawal", sans-serif; font-weight: 700; font-size: 14px;
+    }
+    .stars { position: absolute; inset: 0; opacity: 0.05; z-index: 0; }
+
+    /* Sections */
+    section { margin-bottom: 64px; }
+    h2 { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: 30px; margin-bottom: 8px; }
+    .lede { color: var(--sub); max-width: 560px; margin-bottom: 28px; }
+
+    .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--shadow);
+    }
+    .card .icon { font-size: 26px; margin-bottom: 10px; }
+    .card h3 { font-family: "Tajawal", sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 6px; }
+    .card p { color: var(--sub); font-size: 14.5px; }
+
+    /* Fine bar demo */
+    .finebar-card { background: var(--card); border-radius: var(--radius-card); padding: 28px; box-shadow: var(--shadow); }
+    .finebar-doc { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .finebar-doc .ico { width: 44px; height: 44px; border-radius: 14px; background: var(--canvas); display: grid; place-items: center; font-size: 22px; }
+    .finebar-doc .t { font-weight: 600; font-size: 15px; }
+    .finebar-doc .d { color: var(--sub); font-size: 13px; }
+    .chip { margin-left: auto; border-radius: 999px; padding: 6px 12px; font-family: "Tajawal", sans-serif; font-weight: 700; font-size: 13px; }
+    .chip.amber { background: var(--amber-bg); color: var(--amber); }
+    .track { display: flex; gap: 3px; height: 10px; position: relative; margin-bottom: 10px; }
+    .track .z { border-radius: 5px; }
+    .track .z.g { flex: 60; background: var(--green); }
+    .track .z.a { flex: 30; background: var(--amber); }
+    .track .z.r { flex: 45; background: var(--red); }
+    .track .marker {
+      position: absolute; top: -4px; left: 55%; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--ink); border: 3px solid var(--card); margin-left: -9px;
+    }
+    .zone-labels { display: flex; font-size: 11px; font-weight: 600; }
+    .zone-labels .g { flex: 60; color: var(--green); }
+    .zone-labels .a { flex: 30; color: var(--amber); text-align: center; }
+    .zone-labels .r { flex: 45; color: var(--red); text-align: right; }
+    .fine-note { color: var(--sub); font-size: 12px; margin-top: 16px; }
+
+    /* Privacy */
+    .privacy {
+      position: relative; overflow: hidden; border-radius: var(--radius-card);
+      background: linear-gradient(160deg, var(--hero-top), var(--hero-bottom));
+      color: #fff; padding: 44px 28px; box-shadow: var(--shadow);
+    }
+    .privacy .inner { position: relative; z-index: 1; max-width: 560px; }
+    .privacy h2 { color: #fff; }
+    .privacy p { color: var(--hero-sub); margin-bottom: 12px; }
+    .privacy ul { list-style: none; margin-top: 16px; }
+    .privacy li { padding-left: 26px; position: relative; margin-bottom: 10px; font-size: 15px; }
+    .privacy li::before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+
+    /* FAQ */
+    details {
+      background: var(--card); border-radius: var(--radius-ctl); padding: 18px 22px;
+      margin-bottom: 10px; box-shadow: var(--shadow);
+    }
+    summary { cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+    summary::after { content: "+"; color: var(--sub); font-size: 20px; }
+    details[open] summary::after { content: "–"; }
+    details p { color: var(--sub); font-size: 14.5px; margin-top: 10px; }
+
+    footer { border-top: 1px solid var(--line); padding: 32px 0 48px; text-align: center; }
+    footer .disclaimer { color: var(--sub); font-size: 12px; max-width: 520px; margin: 0 auto 16px; }
+    footer .links { font-size: 13px; }
+    footer .links a { color: var(--green); text-decoration: none; margin: 0 10px; }
+    footer .made { color: var(--sub); font-size: 12px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <div class="wordmark">
+        <div class="row"><span class="name">Tajdeed</span><span class="ar">تجديد</span></div>
+        <div class="hairline"></div>
+      </div>
+      <a class="support" href="mailto:hashirzubair123@gmail.com?subject=Tajdeed">Support</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <header class="hero">
+      <svg class="stars" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" viewBox="0 0 960 520" aria-hidden="true">
+        <defs>
+          <path id="star8" d="M0,-16 L3.9,-9.4 L11.3,-11.3 L9.4,-3.9 L16,0 L9.4,3.9 L11.3,11.3 L3.9,9.4 L0,16 L-3.9,9.4 L-11.3,11.3 L-9.4,3.9 L-16,0 L-9.4,-3.9 L-11.3,-11.3 L-3.9,-9.4 Z" fill="#C9A227"/>
+          <pattern id="starGrid" width="72" height="108" patternUnits="userSpaceOnUse">
+            <use href="#star8" x="18" y="27"/>
+            <use href="#star8" x="54" y="81"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#starGrid)"/>
+      </svg>
+      <div class="hero-inner">
+        <div class="kicker">UAE Renewal Tracker</div>
+        <h1>Never pay a late fine again.</h1>
+        <div class="ar-line">لا تدفع غرامة تأخير بعد اليوم</div>
+        <p class="sub">
+          Visa, Emirates ID, passport, Mulkiya — Tajdeed tracks every expiry date for your whole
+          family and reminds you before the fines start.
+        </p>
+        <div class="badge-row">
+          <a class="store-badge" href="#" aria-label="Download on the App Store">
+            <span class="apple"></span>
+            <span><small>Coming soon to the</small>App Store</span>
+          </a>
+          <span class="fines-pill">A visa overstay costs AED 50 / day</span>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="eyebrow"><span class="en">Why Tajdeed</span><span class="ar">لماذا تجديد</span></div>
+      <h2 class="display">Built for how the UAE actually works.</h2>
+      <p class="lede">Not another generic reminder app — the rules of the Emirates are built in.</p>
+      <div class="grid3">
+        <div class="card">
+          <div class="icon">⚖️</div>
+          <h3 class="display">Fine intelligence</h3>
+          <p>Tajdeed knows the Emirates ID has a 30-day grace period, then AED 20/day capped at
+          AED 1,000 — and that a visa starts fining immediately. See the estimated fines
+          accruing, live, per document.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🔗</div>
+          <h3 class="display">Linked documents</h3>
+          <p>Your Emirates ID renewal is tied to your visa. Your Mulkiya needs valid insurance.
+          Tajdeed surfaces these dependencies so you renew things in the right order.</p>
+        </div>
+        <div class="card">
+          <div class="icon">👨‍👩‍👧‍👦</div>
+          <h3 class="display">The whole family</h3>
+          <p>Track everyone's documents in one place — yours, your spouse's, your kids' —
+          with a smart reminder ladder at 90, 60, 30, 7 and 1 day before each expiry.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow"><span class="en">Fine timeline</span><span class="ar">جدول الغرامات</span></div>
+      <h2 class="display">See exactly where you stand.</h2>
+      <p class="lede">Every fine-bearing document gets a visual timeline: valid, grace, fines — with a marker for today.</p>
+      <div class="finebar-card">
+        <div class="finebar-doc">
+          <div class="ico">🪪</div>
+          <div>
+            <div class="t">Ayesha · Emirates ID</div>
+            <div class="d">Expired 12 days ago</div>
+          </div>
+          <span class="chip amber">Grace · 18d left</span>
+        </div>
+        <div class="track">
+          <div class="z g"></div><div class="z a"></div><div class="z r"></div>
+          <div class="marker"></div>
+        </div>
+        <div class="zone-labels">
+          <span class="g">Valid</span><span class="a">Grace 30d</span><span class="r">AED 20/day</span>
+        </div>
+        <p class="fine-note">Fine amounts are estimates (≈). Always confirm with the official portal.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="privacy">
+        <svg class="stars" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" viewBox="0 0 960 400" aria-hidden="true">
+          <rect width="100%" height="100%" fill="url(#starGrid)"/>
+        </svg>
+        <div class="inner">
+          <div class="eyebrow"><span class="en" style="color:var(--hero-sub)">Private by design</span><span class="ar" style="color:var(--hero-sub)">خصوصية بالتصميم</span></div>
+          <h2 class="display">Your documents are your business.</h2>
+          <p>Tajdeed has no servers, no accounts, and no analytics. There is nothing to sign up
+          for and nothing to leak.</p>
+          <ul>
+            <li>No sign-up, no login — open the app and start</li>
+            <li>Everything stays on your iPhone. Works fully offline</li>
+            <li>Apple privacy label: <strong>Data Not Collected</strong></li>
+            <li>No document numbers, photos or scans — just types, names and dates</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow"><span class="en">Questions</span><span class="ar">أسئلة</span></div>
+      <h2 class="display">FAQ</h2>
+      <details>
+        <summary>Which documents can I track?</summary>
+        <p>Residence visa, Emirates ID, passport, driving license, vehicle registration (Mulkiya),
+        car insurance, health insurance, Ejari tenancy and labour card — each with UAE-specific
+        renewal notes and official portal links.</p>
+      </details>
+      <details>
+        <summary>Are the fine amounts official?</summary>
+        <p>They are estimates based on published UAE rules (e.g. AED 20/day after the Emirates ID
+        grace period, capped at AED 1,000). Always verify with official channels — Tajdeed links
+        you straight to them.</p>
+      </details>
+      <details>
+        <summary>Do I need an account?</summary>
+        <p>No. Tajdeed has no accounts at all. Your data lives only on your phone — we couldn't
+        see it even if we wanted to.</p>
+      </details>
+      <details>
+        <summary>Is Tajdeed a government app?</summary>
+        <p>No. Tajdeed is an independent app and is not affiliated with any UAE government entity.
+        It is informational only.</p>
+      </details>
+      <details>
+        <summary>How much does it cost?</summary>
+        <p>Tajdeed is free to download and use. A one-time Pro unlock for power features may be
+        introduced later — never a subscription.</p>
+      </details>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <p class="disclaimer">
+        Not affiliated with any UAE government entity. Informational only — verify with official
+        channels. Fine amounts are estimates.
+      </p>
+      <div class="links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="mailto:hashirzubair123@gmail.com?subject=Tajdeed">Support</a>
+      </div>
+      <p class="made">Tajdeed (تجديد) · Made in the UAE 🇦🇪</p>
+    </div>
+  </footer>
+
+</body>
+</html>
