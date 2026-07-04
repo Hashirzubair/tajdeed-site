@@ -46,8 +46,14 @@
     .wordmark .name { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.5px; }
     .wordmark .ar { font-family: "Tajawal", sans-serif; font-size: 15px; color: var(--sub); }
     .wordmark .hairline { width: 44px; height: 2px; background: var(--gold); border-radius: 1px; margin-top: 2px; }
+    nav .navlinks { display: flex; gap: 18px; align-items: center; }
     nav a.support { color: var(--sub); text-decoration: none; font-size: 14px; }
     nav a.support:hover { color: var(--ink); }
+    nav a.navcalc {
+      color: var(--green); text-decoration: none; font-size: 14px; font-weight: 600;
+      border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; background: var(--card);
+    }
+    nav a.navcalc:hover { border-color: var(--green); }
 
     /* Hero */
     .hero {
@@ -108,6 +114,12 @@
     .zone-labels .a { flex: 30; color: var(--amber); text-align: center; }
     .zone-labels .r { flex: 45; color: var(--red); text-align: right; }
     .fine-note { color: var(--sub); font-size: 12px; margin-top: 16px; }
+    .calc-cta {
+      display: inline-block; margin-top: 16px; padding: 12px 20px;
+      background: var(--hero-top); color: #fff; text-decoration: none;
+      border-radius: var(--radius-ctl); font-weight: 600; font-size: 14px;
+    }
+    .calc-cta:hover { opacity: 0.9; }
 
     /* Privacy */
     .privacy {
@@ -147,7 +159,10 @@
         <div class="row"><span class="name">Tajdeed</span><span class="ar">تجديد</span></div>
         <div class="hairline"></div>
       </div>
-      <a class="support" href="mailto:hashirzubair123@gmail.com?subject=Tajdeed">Support</a>
+      <div class="navlinks">
+        <a class="support" href="mailto:hashirzubair123@gmail.com?subject=Tajdeed">Support</a>
+        <a class="navcalc" href="calculator.html">Fine calculator</a>
+      </div>
     </div>
   </nav>
 
@@ -231,6 +246,7 @@
           <span class="g">Valid</span><span class="a">Grace 30d</span><span class="r">AED 20/day</span>
         </div>
         <p class="fine-note">Fine amounts are estimates (≈). Always confirm with the official portal.</p>
+        <a class="calc-cta" href="calculator.html">Already expired? Calculate your fine now →</a>
       </div>
     </section>
 
