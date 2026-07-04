@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UAE Overstay Fine Calculator — Visa & Emirates ID Late Fines | Tajdeed</title>
+  <meta name="description" content="Free calculator: see the estimated overstay fine for a UAE residence visa, visit visa or Emirates ID by expiry date. AED 50/day visa overstay, 30-day Emirates ID grace period, AED 1,000 cap — explained." />
+  <link rel="canonical" href="https://hashirzubair.github.io/tajdeed-site/calculator.html" />
+  <meta property="og:title" content="UAE Overstay Fine Calculator" />
+  <meta property="og:description" content="Enter an expiry date, see the estimated fine accruing — residence visa, visit visa and Emirates ID." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #10201B; --sub: #5F6E68; --canvas: #F5F7F5; --card: #FFFFFF; --line: #E9EEEA;
+      --green: #0E7C5B; --green-bg: #E7F3EE; --amber: #96590A; --amber-bg: #FCF0DC;
+      --red: #B3261E; --red-bg: #FBEAE8; --gold: #C9A227;
+      --hero-top: #123B2F; --hero-bottom: #0C231C; --hero-sub: #9FC3B4;
+      --radius-card: 24px; --radius-ctl: 16px;
+      --shadow: 0 8px 24px rgba(16, 32, 27, 0.06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #ECF2EF; --sub: #93A69D; --canvas: #0B1512; --card: #132019; --line: #22322A;
+        --green: #5BC79C; --green-bg: #14352A; --amber: #E8A94F; --amber-bg: #3A2B10;
+        --red: #EF8B82; --red-bg: #3D1713;
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--canvas); color: var(--ink); line-height: 1.6; }
+    .display { font-family: "Tajawal", sans-serif; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    nav { padding: 22px 0; }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+    .wordmark a { text-decoration: none; color: inherit; }
+    .wordmark .row { display: flex; gap: 10px; align-items: baseline; }
+    .wordmark .name { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.5px; }
+    .wordmark .ar { font-family: "Tajawal", sans-serif; font-size: 15px; color: var(--sub); }
+    .wordmark .hairline { width: 44px; height: 2px; background: var(--gold); border-radius: 1px; margin-top: 2px; }
+    nav .back { color: var(--sub); text-decoration: none; font-size: 14px; }
+    nav .back:hover { color: var(--ink); }
+
+    header.page { margin: 12px 0 28px; }
+    .eyebrow { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+    .eyebrow .en { font-size: 12px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; color: var(--sub); }
+    .eyebrow .ar { font-family: "Tajawal", sans-serif; font-size: 14px; color: var(--sub); direction: rtl; }
+    h1 { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: clamp(28px, 5vw, 40px); line-height: 1.2; }
+    .lede { color: var(--sub); margin-top: 8px; max-width: 560px; }
+
+    .calc { background: var(--card); border-radius: var(--radius-card); padding: 26px; box-shadow: var(--shadow); margin-bottom: 22px; }
+    .field { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+    select, input[type="date"] {
+      width: 100%; padding: 13px 14px; border: 1px solid var(--line); border-radius: var(--radius-ctl);
+      background: var(--canvas); color: var(--ink); font-size: 16px; font-family: inherit; appearance: none;
+    }
+    select:focus, input:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+
+    .result { display: none; border-top: 1px solid var(--line); margin-top: 6px; padding-top: 20px; }
+    .result.show { display: block; }
+    .status-chip { display: inline-block; border-radius: 999px; padding: 6px 14px; font-family: "Tajawal", sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 12px; }
+    .status-chip.green { background: var(--green-bg); color: var(--green); }
+    .status-chip.amber { background: var(--amber-bg); color: var(--amber); }
+    .status-chip.red { background: var(--red-bg); color: var(--red); }
+    .big { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: 46px; line-height: 1.1; }
+    .breakdown { color: var(--sub); font-size: 14px; margin-top: 8px; }
+
+    .track { display: flex; gap: 3px; height: 10px; position: relative; margin: 22px 0 8px; }
+    .track .z { border-radius: 5px; }
+    .track .marker { position: absolute; top: -4px; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); border: 3px solid var(--card); margin-left: -9px; transition: left .3s; }
+    .zone-labels { display: flex; font-size: 11px; font-weight: 600; }
+
+    .cta { position: relative; overflow: hidden; border-radius: var(--radius-card); background: linear-gradient(160deg, var(--hero-top), var(--hero-bottom)); color: #fff; padding: 28px; box-shadow: var(--shadow); margin-bottom: 40px; }
+    .cta h2 { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: 24px; margin-bottom: 6px; }
+    .cta p { color: var(--hero-sub); font-size: 15px; margin-bottom: 16px; max-width: 480px; }
+    .cta a { display: inline-block; background: #fff; color: #10201B; border-radius: var(--radius-ctl); padding: 12px 22px; text-decoration: none; font-weight: 600; font-size: 15px; }
+
+    section.info { margin-bottom: 40px; }
+    section.info h2 { font-family: "Tajawal", sans-serif; font-weight: 800; font-size: 24px; margin-bottom: 12px; }
+    section.info h3 { font-family: "Tajawal", sans-serif; font-weight: 700; font-size: 17px; margin: 18px 0 6px; }
+    section.info p, section.info li { color: var(--sub); font-size: 15px; }
+    section.info ul { padding-left: 20px; }
+
+    footer { border-top: 1px solid var(--line); padding: 28px 0 44px; text-align: center; }
+    footer .disclaimer { color: var(--sub); font-size: 12px; max-width: 540px; margin: 0 auto 14px; }
+    footer .links { font-size: 13px; }
+    footer .links a { color: var(--green); text-decoration: none; margin: 0 10px; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <div class="wordmark">
+        <a href="index.html">
+          <div class="row"><span class="name">Tajdeed</span><span class="ar">تجديد</span></div>
+          <div class="hairline"></div>
+        </a>
+      </div>
+      <a class="back" href="index.html">← About the app</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <header class="page">
+      <div class="eyebrow"><span class="en">Free tool</span><span class="ar">حاسبة الغرامات</span></div>
+      <h1>UAE Overstay Fine Calculator</h1>
+      <p class="lede">Pick a document, enter its expiry date, and see the estimated fine accruing —
+      based on published UAE rates. Estimates only; always verify with official channels.</p>
+    </header>
+
+    <div class="calc">
+      <div class="field">
+        <label for="doctype">Document type</label>
+        <select id="doctype" aria-label="Document type">
+          <option value="visa">Residence Visa — AED 50/day</option>
+          <option value="visit">Visit / Tourist Visa — AED 50/day</option>
+          <option value="eid">Emirates ID — 30-day grace, then AED 20/day (cap AED 1,000)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="expiry">Expiry date</label>
+        <input type="date" id="expiry" aria-label="Expiry date" />
+      </div>
+
+      <div class="result" id="result" aria-live="polite">
+        <span class="status-chip" id="chip"></span>
+        <div class="big" id="big"></div>
+        <div class="breakdown" id="breakdown"></div>
+        <div class="track" id="track"></div>
+        <div class="zone-labels" id="zoneLabels"></div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <h2>Never let it get this far again.</h2>
+      <p>Tajdeed tracks every expiry date for your whole family — visa, Emirates ID, Mulkiya and
+      more — and reminds you before fines start. Private: your data never leaves your phone.</p>
+      <a href="index.html"> Get Tajdeed — coming soon to the App Store</a>
+    </div>
+
+    <section class="info">
+      <h2>How UAE overstay fines work</h2>
+      <h3>Residence and visit visas</h3>
+      <p>Since October 2022, the UAE applies a unified overstay fine of <strong>AED 50 per day</strong>.
+      This calculator assumes fines from the day after expiry (the worst case). Some visa types and
+      statuses have grace periods before fines begin — always confirm your own case with
+      <a href="https://icp.gov.ae" rel="noopener">ICP</a>.</p>
+      <h3>Emirates ID</h3>
+      <p>You have <strong>30 days</strong> after expiry to renew. After that, the fine is
+      <strong>AED 20 per day</strong>, capped at <strong>AED 1,000</strong>.</p>
+      <h3>Good to know</h3>
+      <ul>
+        <li>Overstay fines must be settled before leaving the country.</li>
+        <li>Emirates ID renewal is tied to your residence visa — renew the visa first.</li>
+        <li>Most visit visas can be extended from inside the UAE if you apply before expiry.</li>
+      </ul>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <p class="disclaimer">All amounts are estimates (≈). Not affiliated with any UAE government
+      entity. Informational only — verify with official channels.</p>
+      <div class="links">
+        <a href="index.html">Tajdeed app</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="mailto:hashirzubair123@gmail.com?subject=Tajdeed">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much is the UAE visa overstay fine?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The UAE applies a unified overstay fine of AED 50 per day for residence and visit visas, counted from the day after the visa expires (grace periods may apply to some visa types — verify with ICP)." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the fine for a late Emirates ID renewal?",
+        "acceptedAnswer": { "@type": "Answer", "text": "You have 30 days after expiry to renew your Emirates ID. After the grace period, the fine is AED 20 per day, capped at AED 1,000." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do overstay fines have to be paid before leaving the UAE?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — outstanding overstay fines must be settled before departure, at the airport, an ICP customer happiness centre, or online." }
+      }
+    ]
+  }
+  </script>
+
+  <script>
+    // Fine math — identical to the Tajdeed app's validated finesAccrued().
+    const RULES = {
+      visa:  { rate: 50, grace: 0,  cap: null, label: "Residence Visa" },
+      visit: { rate: 50, grace: 0,  cap: null, label: "Visit / Tourist Visa" },
+      eid:   { rate: 20, grace: 30, cap: 1000, label: "Emirates ID" }
+    };
+    const PRE = 60, POST = 45;
+    const aed = n => "AED " + n.toLocaleString("en-AE", { maximumFractionDigits: 0 });
+
+    const $ = id => document.getElementById(id);
+    const els = { type: $("doctype"), date: $("expiry"), result: $("result"), chip: $("chip"),
+                  big: $("big"), breakdown: $("breakdown"), track: $("track"), labels: $("zoneLabels") };
+
+    function daysUntil(iso) {
+      const [y, m, d] = iso.split("-").map(Number);
+      const exp = new Date(y, m - 1, d);
+      const now = new Date(); now.setHours(0, 0, 0, 0);
+      return Math.round((exp - now) / 86400000);
+    }
+
+    function render() {
+      const iso = els.date.value;
+      if (!iso) { els.result.classList.remove("show"); return; }
+      const rule = RULES[els.type.value];
+      const daysLeft = daysUntil(iso);
+      const overdue = -daysLeft;
+      const fineDays = Math.max(0, overdue - rule.grace);
+      let fine = fineDays * rule.rate;
+      const capped = rule.cap !== null && fine > rule.cap;
+      if (capped) fine = rule.cap;
+
+      let chipClass, chipText, bigText, breakdown;
+      if (daysLeft > 0) {
+        chipClass = daysLeft <= 30 ? "red" : daysLeft <= 90 ? "amber" : "green";
+        chipText = daysLeft + " days left";
+        bigText = "≈ " + aed(0);
+        breakdown = "No fine yet. " + (rule.grace > 0
+          ? "After expiry you have a " + rule.grace + "-day grace period, then " + aed(rule.rate) + "/day."
+          : "Fines of " + aed(rule.rate) + "/day start the day after expiry.");
+      } else if (overdue <= rule.grace) {
+        chipClass = "amber";
+        chipText = "Grace period · " + (rule.grace - overdue) + " days left";
+        bigText = "≈ " + aed(0);
+        breakdown = overdue + " of " + rule.grace + " grace days used. After the grace period: "
+          + aed(rule.rate) + "/day" + (rule.cap ? ", capped at " + aed(rule.cap) : "") + ".";
+      } else {
+        chipClass = "red";
+        chipText = overdue + (overdue === 1 ? " day" : " days") + " overdue";
+        bigText = "≈ " + aed(fine);
+        breakdown = fineDays + " fine day" + (fineDays === 1 ? "" : "s") + " × " + aed(rule.rate) + "/day"
+          + (capped ? " — capped at " + aed(rule.cap) : "")
+          + ". Estimate only — verify with ICP.";
+      }
+
+      els.chip.className = "status-chip " + chipClass;
+      els.chip.textContent = chipText;
+      els.big.textContent = bigText;
+      els.breakdown.textContent = breakdown;
+
+      // Timeline: valid | grace | fines, with a marker at today.
+      const total = PRE + rule.grace + POST;
+      const pos = Math.min(Math.max(PRE - daysLeft, 0), total);
+      const pct = (pos / total) * 100;
+      let zones = '<div class="z" style="flex:' + PRE + ';background:var(--green)"></div>';
+      if (rule.grace > 0) zones += '<div class="z" style="flex:' + rule.grace + ';background:var(--amber)"></div>';
+      zones += '<div class="z" style="flex:' + POST + ';background:var(--red)"></div>';
+      zones += '<div class="marker" style="left:' + pct + '%"></div>';
+      els.track.innerHTML = zones;
+      let labels = '<span style="flex:' + PRE + ';color:var(--green)">Valid</span>';
+      if (rule.grace > 0) labels += '<span style="flex:' + rule.grace + ';color:var(--amber);text-align:center">Grace ' + rule.grace + 'd</span>';
+      labels += '<span style="flex:' + POST + ';color:var(--red);text-align:right">' + aed(rule.rate) + '/day</span>';
+      els.labels.innerHTML = labels;
+
+      els.result.classList.add("show");
+    }
+
+    els.type.addEventListener("change", render);
+    els.date.addEventListener("input", render);
+  </script>
+</body>
+</html>
